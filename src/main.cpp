@@ -135,11 +135,10 @@ loop() {
         delay(10);
     }
 
-    // digitalWrite(LED_BUILTIN, HIGH);
-    // delay(500);
-    // digitalWrite(LED_BUILTIN, LOW);
-    // delay(500);
-    // Serial.printf("Sample count: %d\n", sampleCount);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(500);
 
     delay(100);
 }
