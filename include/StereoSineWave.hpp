@@ -1,3 +1,7 @@
+#include "Config.hpp"
+
+#ifdef SSW
+
 #pragma once
 
 #include <Audio.h>
@@ -21,3 +25,5 @@ void setup();
 void loop();
 
 } // namespace ssw
+
+#endif

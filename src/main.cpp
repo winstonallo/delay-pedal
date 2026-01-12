@@ -1,11 +1,12 @@
-#include "StereoSineWave.hpp"
+#include "Config.hpp"
+#include "WavVolumeKnob.hpp"
 
 void
 setup() {
-    ssw::setup();
+    wvk::setup();
 }
 
 void
 loop() {
-    ssw::loop();
+    wvk::loop();
 }
