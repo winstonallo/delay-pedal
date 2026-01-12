@@ -1,4 +1,4 @@
 #pragma once
 
-#define WVK
-// #define SSW
+// #define WVK
+#define SSW

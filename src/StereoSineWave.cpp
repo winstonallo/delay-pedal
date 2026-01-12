@@ -2,6 +2,7 @@
 
 #ifdef SSW
 
+#include "GigaDelay.hpp"
 #include <Audio.h>
 
 namespace ssw {
@@ -10,8 +11,8 @@ AudioOutputI2S i2s1;
 
 AudioSynthWaveformSine sound1;
 AudioSynthWaveformSine sound2;
-AudioEffectEnvelope envelope1;
-AudioEffectEnvelope envelope2;
+GigaDelay envelope1;
+GigaDelay envelope2;
 AudioConnection connect1(sound1, 0, envelope1, 0);
 AudioConnection connect2(sound1, 0, envelope1, 1);
 AudioConnection connect3(sound2, 0, envelope2, 0);
