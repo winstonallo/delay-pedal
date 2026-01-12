@@ -41,17 +41,37 @@ int volumeValues = 0;
 // #define SDCARD_MOSI_PIN  11l
 // #define SDCARD_SCK_PIN   13
 
+void updateVolume();
+
 #define VOLUME_SAMPLES 5
 
 class Volume {
   private:
+    uint8_t _pin;
+    uint32_t _readInterval;
     uint16_t _samples[VOLUME_SAMPLES];
     uint8_t _curr;
     uint16_t _sum;
     bool _filled;
+    IntervalTimer _timer;
 
   public:
-    Volume() : _curr(0), _sum(0), _filled(false) { memset(_samples, 0, VOLUME_SAMPLES * sizeof(uint16_t)); }
+    Volume(uint8_t pin, uint32_t readInterval) : _pin(pin), _readInterval(readInterval), _curr(0), _sum(0), _filled(false) {
+        memset(_samples, 0, VOLUME_SAMPLES * sizeof(uint16_t));
+        _timer = IntervalTimer();
+    }
+
+    Volume() = delete;
+
+    void
+    begin() {
+        _timer.begin(updateVolume, _readInterval);
+    }
+
+    const uint8_t
+    getPin() const {
+        return _pin;
+    }
 
     void
     addSample(uint16_t sample) {
@@ -67,8 +87,8 @@ class Volume {
         }
     }
 
-    float32_t
-    getVolume() {
+    const float32_t
+    getVolume() const {
         uint8_t count = _filled ? VOLUME_SAMPLES : (_curr == 0 ? VOLUME_SAMPLES : _curr);
         float32_t avgReading = (float32_t)_sum / (float32_t)count;
         float32_t vol = avgReading / 1023.0;
@@ -77,13 +97,18 @@ class Volume {
     }
 };
 
-IntervalTimer timer;
-volatile uint32_t sampleCount = 0;
+Volume volume(A0, 100000);
 
 void
-timerISR() {
-    sampleCount++;
+updateVolume() {
+    uint16_t knobValue = analogRead(volume.getPin());
+    volume.addSample(knobValue);
+    float32_t vol = volume.getVolume();
+    sgtl5000_1.volume(vol);
+    Serial.printf("reading: %d, volume: %f\n", knobValue, vol);
 }
+
+volatile uint32_t sampleCount = 0;
 
 void
 setup() {
@@ -98,32 +123,23 @@ setup() {
         delay(500);
     }
     pinMode(LED_BUILTIN, OUTPUT);
+    volume.begin();
     delay(1000);
-
-    timer.begin(timerISR, 1000);
 }
-
-Volume volume;
 
 void
 loop() {
     if (playSdWav1.isPlaying() == false) {
         Serial.println("Start playing");
         playSdWav1.play("A.WAV");
-        // delay(10); // wait for library to parse WAV info
-        delay(2000);
+        delay(10);
     }
-
-    volume.addSample(analogRead(volumeKnob));
 
     // digitalWrite(LED_BUILTIN, HIGH);
     // delay(500);
     // digitalWrite(LED_BUILTIN, LOW);
     // delay(500);
     // Serial.printf("Sample count: %d\n", sampleCount);
-    float32_t vol = volume.getVolume();
-    sgtl5000_1.volume(vol);
-    Serial.printf("volume: %f\n", vol);
 
     delay(100);
 }
