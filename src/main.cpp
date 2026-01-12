@@ -97,8 +97,6 @@ updateVolume() {
     Serial.printf("reading: %d, volume: %f\n", knobValue, vol);
 }
 
-volatile uint32_t sampleCount = 0;
-
 void
 setup() {
     Serial.begin(9600);
