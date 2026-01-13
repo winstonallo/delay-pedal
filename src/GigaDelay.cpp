@@ -72,7 +72,7 @@ class RingBuffer {
     }
 
     void
-    addSample(uint16_t sample) {
+    addSample(int16_t sample) {
         _buf[_curr] = sample;
         _curr = (_curr + 1) % GIGADELAY_RINGBUFFER_SIZE;
     }
@@ -106,12 +106,6 @@ RingBuffer buffer(1000);
 
 void
 GigaDelay::update(void) {
-    static int round = 0;
-    static int coef = 1;
-
-    if (round % 100 == 0) {
-        coef = 2; // rand() % 10;
-    }
 
     audio_block_t *block = receiveWritable();
     if (!block) return;
@@ -126,7 +120,6 @@ GigaDelay::update(void) {
 
     transmit(block);
     AudioStream::release(block);
-    round++;
 }
 
 bool
