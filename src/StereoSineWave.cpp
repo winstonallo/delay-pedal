@@ -1,4 +1,8 @@
 #include "Config.hpp"
+#include "VolumeKnob.hpp"
+#include "arm_math.h"
+#include "core_pins.h"
+#include "effect_envelope.h"
 
 #ifdef SSW
 
@@ -11,46 +15,34 @@ namespace ssw {
 AudioControlSGTL5000 sgtl5000_1;
 AudioOutputI2S i2s1;
 
-AudioSynthWaveformSine sound1;
-AudioSynthWaveformSine sound2;
-GigaDelay envelope1;
-GigaDelay envelope2;
-AudioConnection connect1(sound1, 0, envelope1, 0);
-AudioConnection connect2(sound1, 0, envelope1, 1);
-AudioConnection connect3(sound2, 0, envelope2, 0);
-AudioConnection connect4(sound2, 0, envelope2, 1);
-AudioConnection connect5(envelope1, 0, i2s1, 0);
-AudioConnection connect6(envelope2, 0, i2s1, 1);
+AudioSynthWaveformSine sound;
 
-VolumeKnob volume(A0, 100000);
+AudioEffectEnvelope envelope;
+GigaDelay gigaDelay;
+
+AudioConnection connect1(sound, 0, envelope, 0);
+AudioConnection connect5(envelope, 0, gigaDelay, 0);
+AudioConnection connect6(gigaDelay, 0, i2s1, 0);
+
+VolumeKnob volume(A14, 100000);
+VolumeKnob delayKnob(A15, 100000);
 
 void
 setup() {
+    Serial.begin(9600);
     AudioMemory(8);
 
-    sound1.amplitude(0.5);
-    sound1.frequency(300);
-    sound1.phase(180);
+    sound.amplitude(0.5);
+    sound.frequency(300);
+    sound.phase(180);
 
-    sound2.amplitude(0.5);
-    sound2.frequency(220);
-    sound2.phase(180);
+    envelope.attack(5);
+    envelope.hold(50);
 
-    envelope1.attack(5);
-    envelope1.hold(50);
+    envelope.decay(300);
 
-    envelope1.decay(300);
-
-    envelope1.sustain(0);
-    envelope1.release(100);
-
-    envelope2.attack(5);
-    envelope2.hold(50);
-
-    envelope2.decay(300);
-
-    envelope2.sustain(0);
-    envelope2.release(100);
+    envelope.sustain(0);
+    envelope.release(100);
 
     sgtl5000_1.enable();
     sgtl5000_1.volume(0.1);
@@ -58,15 +50,26 @@ setup() {
     ssw::volume.begin([] {
         float32_t vol = volume.update();
         ssw::sgtl5000_1.volume(vol);
+        // Serial.printf("Volume: %f\n", vol);
     });
+    gigaDelay.setTime(1000);
+    // ssw::delayKnob.begin([] {
+    //     float32_t vol = delayKnob.update();
+    //     float32_t time = vol * 1000.0;
+    //     Serial.printf("Normalized Value: %f, Time: %f\n", vol, time);
+    //     gigaDelay.setTime(time);
+    // });
 }
 
 void
 loop() {
-    envelope1.noteOn();
-    envelope2.noteOn();
+    envelope.noteOn();
+    gigaDelay.noteOn();
 
-    delay(500);
+    Serial.printf("A14: %d\n", analogRead(A14));
+    Serial.printf("A15: %d\n", analogRead(A15));
+
+    delay(100);
 }
 
 } // namespace ssw

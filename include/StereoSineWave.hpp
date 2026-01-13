@@ -1,6 +1,7 @@
 #include "Config.hpp"
 #include "GigaDelay.hpp"
 #include "VolumeKnob.hpp"
+#include "effect_envelope.h"
 
 #ifdef SSW
 
@@ -14,14 +15,13 @@ namespace ssw {
 
 extern AudioControlSGTL5000 sgtl5000_1;
 extern AudioOutputI2S i2s1;
-extern AudioSynthWaveformSine sound1;
-extern AudioSynthWaveformSine sound2;
-extern GigaDelay envelope1;
-extern GigaDelay envelope2;
+
+extern AudioSynthWaveformSine sound;
+
+extern GigaDelay gigaDelay;
+extern AudioEffectEnvelope envelope;
+
 extern AudioConnection connect1;
-extern AudioConnection connect2;
-extern AudioConnection connect3;
-extern AudioConnection connect4;
 extern AudioConnection connect5;
 extern AudioConnection connect6;
 

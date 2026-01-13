@@ -24,6 +24,7 @@ VolumeKnob::getPin() const {
 float32_t
 VolumeKnob::update() {
     uint16_t knobValue = _readFromPin();
+
     _sum -= _samples[_curr];
 
     _samples[_curr] = knobValue;

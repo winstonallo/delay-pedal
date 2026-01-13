@@ -14,7 +14,7 @@ AudioConnection patchCord1(playSdWav1, 0, i2s1, 0);
 AudioConnection patchCord2(playSdWav1, 1, i2s1, 1);
 AudioControlSGTL5000 sgtl5000_1;
 
-VolumeKnob volume(A0, 100000);
+VolumeKnob volume(A14, 100000);
 
 void
 setup() {
@@ -50,12 +50,12 @@ loop() {
         delay(10);
     }
 
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(500);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(500);
+    Serial.printf("A14: %d\n", analogRead(A14));
 
     delay(100);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(100);
+    digitalWrite(LED_BUILTIN, LOW);
 }
 
 } // namespace pwf

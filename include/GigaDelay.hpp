@@ -3,15 +3,18 @@
 
 #include <Arduino.h>
 #include <AudioStream.h>
+#include <ctime>
 
-#define SAMPLES_PER_MSEC (AUDIO_SAMPLE_RATE_EXACT / 1000.0f)
+#ifndef GIGADELAY_SAMPLES_PER_MSEC
+#define GIGADELAY_SAMPLES_PER_MSEC (AUDIO_SAMPLE_RATE_EXACT / 1000.0f)
+#endif
 
 class GigaDelay : public AudioStream {
 
   public:
     GigaDelay() : AudioStream(1, inputQueueArray) {
         state = 0;
-        delay(0.0f); // default values...
+        delay(0.0f);
         attack(10.5f);
         hold(2.5f);
         decay(35.0f);
@@ -57,6 +60,12 @@ class GigaDelay : public AudioStream {
         release_forced_count = milliseconds2count(milliseconds);
         if (release_count == 0) release_count = 1;
     }
+
+    void
+    setTime(size_t time_ms) {
+        _time_ms = time_ms;
+    }
+
     bool isActive();
     bool isSustain();
     virtual void update(void);
@@ -65,7 +74,7 @@ class GigaDelay : public AudioStream {
     uint16_t
     milliseconds2count(float milliseconds) {
         if (milliseconds < 0.0f) milliseconds = 0.0f;
-        uint32_t c = ((uint32_t)(milliseconds * SAMPLES_PER_MSEC) + 7) >> 3;
+        uint32_t c = ((uint32_t)(milliseconds * GIGADELAY_SAMPLES_PER_MSEC) + 7) >> 3;
         if (c > 65535) c = 65535; // allow up to 11.88 seconds
         return c;
     }
@@ -84,6 +93,7 @@ class GigaDelay : public AudioStream {
     int32_t sustain_mult;
     uint16_t release_count;
     uint16_t release_forced_count;
+    size_t _time_ms;
 };
 
 #endif
