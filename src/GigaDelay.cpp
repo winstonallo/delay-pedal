@@ -48,8 +48,8 @@ GigaDelay::noteOff(void) {
 }
 
 void
-GigaDelay::setTime(size_t time_ms) {
-    _time_ms = time_ms;
+GigaDelay::setTime(size_t ms) {
+    _ms = ms;
 }
 
 #define GIGADELAY_TIME_SEC 4
@@ -62,9 +62,9 @@ class RingBuffer {
     size_t _delay_samples;
 
   public:
-    RingBuffer(size_t time_ms) {
+    RingBuffer(size_t ms) {
         _curr = 0;
-        _delay_samples = (time_ms * AUDIO_SAMPLE_RATE) / 1000;
+        _delay_samples = (ms * AUDIO_SAMPLE_RATE) / 1000;
         if (_delay_samples >= GIGADELAY_RINGBUFFER_SIZE) {
             _delay_samples = GIGADELAY_RINGBUFFER_SIZE - 1;
         }
@@ -94,8 +94,8 @@ class RingBuffer {
     }
 
     void
-    setTime(size_t time_ms) {
-        _delay_samples = (time_ms * AUDIO_SAMPLE_RATE) / 1000;
+    setTime(size_t ms) {
+        _delay_samples = (ms * AUDIO_SAMPLE_RATE) / 1000;
         if (_delay_samples >= GIGADELAY_RINGBUFFER_SIZE) {
             _delay_samples = GIGADELAY_RINGBUFFER_SIZE - 1;
         }
@@ -114,7 +114,7 @@ GigaDelay::update(void) {
         return;
     }
 
-    buffer.setTime(_time_ms);
+    buffer.setTime(_ms);
 
     buffer.update(block);
 

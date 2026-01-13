@@ -12,11 +12,11 @@
 class GigaDelay : public AudioStream {
 
   public:
-    GigaDelay() : AudioStream(1, inputQueueArray), _time_ms(1000) { state = 0; }
+    GigaDelay() : AudioStream(1, inputQueueArray), _ms(1000) { state = 0; }
     void noteOn();
     void noteOff();
 
-    void setTime(size_t time_ms);
+    void setTime(size_t ms);
 
     bool isActive();
     bool isSustain();
@@ -45,7 +45,7 @@ class GigaDelay : public AudioStream {
     int32_t sustain_mult;
     uint16_t release_count;
     uint16_t release_forced_count;
-    size_t _time_ms;
+    size_t _ms;
 };
 
 #endif
