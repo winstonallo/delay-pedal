@@ -46,6 +46,7 @@ Diagnostics:
   Suppress:
       - pp_file_not_found_angled_include_not_fatal
       - pp_file_not_found
+      - ovl_no_viable_member_function_in_call
 """
 
         with open(".clangd", "w") as f:
