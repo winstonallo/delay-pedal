@@ -2,8 +2,8 @@
 #define GIGADELAY_HPP
 
 #include "utility/dspinst.h"
-#include <Arduino.h>     // github.com/PaulStoffregen/cores/blob/master/teensy4/Arduino.h
-#include <AudioStream.h> // github.com/PaulStoffregen/cores/blob/master/teensy4/AudioStream.h
+#include <Arduino.h>
+#include <AudioStream.h>
 
 #define SAMPLES_PER_MSEC (AUDIO_SAMPLE_RATE_EXACT / 1000.0f)
 
