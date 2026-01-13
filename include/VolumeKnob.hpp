@@ -27,9 +27,9 @@ class VolumeKnob {
 
     void begin(void (*updateCallback)());
 
-    const uint8_t getPin() const;
+    uint8_t getPin() const;
 
-    const float32_t update();
+    float32_t update();
 
-    const float32_t _getCurrentVolume() const;
+    float32_t _getCurrentVolume() const;
 };

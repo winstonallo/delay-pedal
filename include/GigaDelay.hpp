@@ -1,7 +1,6 @@
 #ifndef GIGADELAY_HPP
 #define GIGADELAY_HPP
 
-#include "utility/dspinst.h"
 #include <Arduino.h>
 #include <AudioStream.h>
 

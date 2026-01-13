@@ -10,15 +10,18 @@ void (*VolumeKnob::_updateCallback)() = nullptr;
 void
 VolumeKnob::begin(void (*updateCallback)()) {
     _updateCallback = updateCallback;
-    _timer.begin(_updateCallback, _readInterval);
+
+    if (_updateCallback) {
+        _timer.begin(_updateCallback, _readInterval);
+    }
 }
 
-const uint8_t
+uint8_t
 VolumeKnob::getPin() const {
     return _pin;
 }
 
-const float32_t
+float32_t
 VolumeKnob::update() {
     uint16_t knobValue = _readFromPin();
     _sum -= _samples[_curr];
@@ -35,7 +38,7 @@ VolumeKnob::update() {
     return _getCurrentVolume();
 }
 
-const float32_t
+float32_t
 VolumeKnob::_getCurrentVolume() const {
     uint8_t count = _filled ? VOLUME_SAMPLES : (_curr == 0 ? VOLUME_SAMPLES : _curr);
     float32_t avgReading = (float32_t)_sum / (float32_t)count;
