@@ -52,12 +52,12 @@ Delay::setTime(size_t ms) {
     _ms = ms;
 }
 
-#define GIGADELAY_TIME_SEC 4
-#define GIGADELAY_RINGBUFFER_SIZE ((int)AUDIO_SAMPLE_RATE * GIGADELAY_TIME_SEC)
+#define DELAY_TIME_SEC 4
+#define DELAY_RINGBUFFER_SIZE ((int)AUDIO_SAMPLE_RATE * DELAY_TIME_SEC)
 
 class RingBuffer {
   private:
-    uint16_t _buf[GIGADELAY_RINGBUFFER_SIZE];
+    uint16_t _buf[DELAY_RINGBUFFER_SIZE];
     size_t _curr;
     size_t _delay_samples;
 
@@ -65,8 +65,8 @@ class RingBuffer {
     RingBuffer(size_t ms) {
         _curr = 0;
         _delay_samples = (ms * AUDIO_SAMPLE_RATE) / 1000;
-        if (_delay_samples >= GIGADELAY_RINGBUFFER_SIZE) {
-            _delay_samples = GIGADELAY_RINGBUFFER_SIZE - 1;
+        if (_delay_samples >= DELAY_RINGBUFFER_SIZE) {
+            _delay_samples = DELAY_RINGBUFFER_SIZE - 1;
         }
         memset(_buf, 0, sizeof(_buf));
     }
@@ -74,7 +74,7 @@ class RingBuffer {
     void
     addSample(int16_t sample) {
         _buf[_curr] = sample;
-        _curr = (_curr + 1) % GIGADELAY_RINGBUFFER_SIZE;
+        _curr = (_curr + 1) % DELAY_RINGBUFFER_SIZE;
     }
 
     void
@@ -89,15 +89,15 @@ class RingBuffer {
 
     uint16_t
     getDelayedSample() {
-        size_t read_pos = (_curr + GIGADELAY_RINGBUFFER_SIZE - _delay_samples) % GIGADELAY_RINGBUFFER_SIZE;
+        size_t read_pos = (_curr + DELAY_RINGBUFFER_SIZE - _delay_samples) % DELAY_RINGBUFFER_SIZE;
         return _buf[read_pos];
     }
 
     void
     setTime(size_t ms) {
         _delay_samples = (ms * AUDIO_SAMPLE_RATE) / 1000;
-        if (_delay_samples >= GIGADELAY_RINGBUFFER_SIZE) {
-            _delay_samples = GIGADELAY_RINGBUFFER_SIZE - 1;
+        if (_delay_samples >= DELAY_RINGBUFFER_SIZE) {
+            _delay_samples = DELAY_RINGBUFFER_SIZE - 1;
         }
     }
 };
