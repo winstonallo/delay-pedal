@@ -52,8 +52,8 @@ GigaDelay::setTime(size_t time_ms) {
     _time_ms = time_ms;
 }
 
-#define GIGADELAY_TIME_SEC 1
-#define GIGADELAY_RINGBUFFER_SIZE ((int)AUDIO_SAMPLE_RATE)
+#define GIGADELAY_TIME_SEC 4
+#define GIGADELAY_RINGBUFFER_SIZE ((int)AUDIO_SAMPLE_RATE * GIGADELAY_TIME_SEC)
 
 class RingBuffer {
   private:

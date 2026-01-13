@@ -49,14 +49,14 @@ setup() {
 
     ssw::volume.begin([] {
         float32_t vol = volume.update();
+        Serial.printf("Volume: %.0f%%\n", vol * (float32_t)100);
         ssw::sgtl5000_1.volume(vol);
-        // Serial.printf("Volume: %f\n", vol);
     });
-    gigaDelay.setTime(1000);
+
     ssw::delayKnob.begin([] {
         float32_t vol = delayKnob.update();
-        float32_t time = vol * 1000.0;
-        Serial.printf("Normalized Value: %f, Time: %f\n", vol, time);
+        float32_t time = vol * 4000.0;
+        Serial.printf("Delay Time: %.3f ms\n", time);
         gigaDelay.setTime(time);
     });
 }
@@ -66,10 +66,7 @@ loop() {
     envelope.noteOn();
     gigaDelay.noteOn();
 
-    Serial.printf("A14: %d\n", analogRead(A14));
-    Serial.printf("A15: %d\n", analogRead(A15));
-
-    delay(1000);
+    delay(2000);
 }
 
 } // namespace ssw

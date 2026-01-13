@@ -12,54 +12,9 @@
 class GigaDelay : public AudioStream {
 
   public:
-    GigaDelay() : AudioStream(1, inputQueueArray) {
-        state = 0;
-        delay(0.0f);
-        attack(10.5f);
-        hold(2.5f);
-        decay(35.0f);
-        sustain(0.5f);
-        release(300.0f);
-        releaseNoteOn(5.0f);
-    }
+    GigaDelay() : AudioStream(1, inputQueueArray), _time_ms(1000) { state = 0; }
     void noteOn();
     void noteOff();
-    void
-    delay(float milliseconds) {
-        delay_count = milliseconds2count(milliseconds);
-    }
-    void
-    attack(float milliseconds) {
-        attack_count = milliseconds2count(milliseconds);
-        if (attack_count == 0) attack_count = 1;
-    }
-    void
-    hold(float milliseconds) {
-        hold_count = milliseconds2count(milliseconds);
-    }
-    void
-    decay(float milliseconds) {
-        decay_count = milliseconds2count(milliseconds);
-        if (decay_count == 0) decay_count = 1;
-    }
-    void
-    sustain(float level) {
-        if (level < 0.0f)
-            level = 0;
-        else if (level > 1.0f)
-            level = 1.0f;
-        sustain_mult = level * 1073741824.0f;
-    }
-    void
-    release(float milliseconds) {
-        release_count = milliseconds2count(milliseconds);
-        if (release_count == 0) release_count = 1;
-    }
-    void
-    releaseNoteOn(float milliseconds) {
-        release_forced_count = milliseconds2count(milliseconds);
-        if (release_count == 0) release_count = 1;
-    }
 
     void setTime(size_t time_ms);
 
