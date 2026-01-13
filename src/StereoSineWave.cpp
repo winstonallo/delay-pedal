@@ -6,7 +6,7 @@
 
 #ifdef SSW
 
-#include "GigaDelay.hpp"
+#include "Delay.hpp"
 #include "StereoSineWave.hpp"
 #include <Audio.h>
 
@@ -18,7 +18,7 @@ AudioOutputI2S i2s1;
 AudioSynthWaveformSine sound;
 
 AudioEffectEnvelope envelope;
-GigaDelay gigaDelay;
+Delay gigaDelay;
 
 AudioConnection connect1(sound, 0, envelope, 0);
 AudioConnection connect5(envelope, 0, gigaDelay, 0);

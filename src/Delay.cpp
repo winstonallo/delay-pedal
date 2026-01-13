@@ -1,4 +1,4 @@
-#include "GigaDelay.hpp"
+#include "Delay.hpp"
 #include "AudioStream.h"
 #include <Arduino.h>
 #include <cstddef>
@@ -15,7 +15,7 @@
 #define STATE_FORCED 7
 
 void
-GigaDelay::noteOn(void) {
+Delay::noteOn(void) {
     __disable_irq();
     if (state == STATE_IDLE || state == STATE_DELAY || release_forced_count == 0) {
         mult_hires = 0;
@@ -37,7 +37,7 @@ GigaDelay::noteOn(void) {
 }
 
 void
-GigaDelay::noteOff(void) {
+Delay::noteOff(void) {
     __disable_irq();
     if (state != STATE_IDLE && state != STATE_FORCED) {
         state = STATE_RELEASE;
@@ -48,7 +48,7 @@ GigaDelay::noteOff(void) {
 }
 
 void
-GigaDelay::setTime(size_t ms) {
+Delay::setTime(size_t ms) {
     _ms = ms;
 }
 
@@ -105,7 +105,7 @@ class RingBuffer {
 RingBuffer buffer(1000);
 
 void
-GigaDelay::update(void) {
+Delay::update(void) {
 
     audio_block_t *block = receiveWritable();
     if (!block) return;
@@ -123,14 +123,14 @@ GigaDelay::update(void) {
 }
 
 bool
-GigaDelay::isActive() {
+Delay::isActive() {
     uint8_t current_state = *(volatile uint8_t *)&state;
     if (current_state == STATE_IDLE) return false;
     return true;
 }
 
 bool
-GigaDelay::isSustain() {
+Delay::isSustain() {
     uint8_t current_state = *(volatile uint8_t *)&state;
     if (current_state == STATE_SUSTAIN) return true;
     return false;

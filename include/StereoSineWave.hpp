@@ -1,5 +1,5 @@
 #include "Config.hpp"
-#include "GigaDelay.hpp"
+#include "Delay.hpp"
 #include "Knob.hpp"
 #include "effect_envelope.h"
 
@@ -18,7 +18,7 @@ extern AudioOutputI2S i2s1;
 
 extern AudioSynthWaveformSine sound;
 
-extern GigaDelay gigaDelay;
+extern Delay gigaDelay;
 extern AudioEffectEnvelope envelope;
 
 extern AudioConnection connect1;

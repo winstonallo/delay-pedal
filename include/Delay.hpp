@@ -9,10 +9,10 @@
 #define GIGADELAY_SAMPLES_PER_MSEC (AUDIO_SAMPLE_RATE_EXACT / 1000.0f)
 #endif
 
-class GigaDelay : public AudioStream {
+class Delay : public AudioStream {
 
   public:
-    GigaDelay() : AudioStream(1, inputQueueArray), _ms(1000) { state = 0; }
+    Delay() : AudioStream(1, inputQueueArray), _ms(1000) { state = 0; }
     void noteOn();
     void noteOff();
 
