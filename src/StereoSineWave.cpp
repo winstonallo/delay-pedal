@@ -52,7 +52,7 @@ setup() {
         ssw::sgtl5000_1.volume(vol);
         // Serial.printf("Volume: %f\n", vol);
     });
-    gigaDelay.setTime(1000);
+    // gigaDelay.setTime(1000);
     // ssw::delayKnob.begin([] {
     //     float32_t vol = delayKnob.update();
     //     float32_t time = vol * 1000.0;

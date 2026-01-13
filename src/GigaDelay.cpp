@@ -47,6 +47,11 @@ GigaDelay::noteOff(void) {
     __enable_irq();
 }
 
+void
+GigaDelay::setTime(size_t time_ms) {
+    _time_ms = time_ms;
+}
+
 #define GIGADELAY_TIME_SEC 1
 #define GIGADELAY_RINGBUFFER_SIZE ((int)AUDIO_SAMPLE_RATE)
 
@@ -75,7 +80,7 @@ class RingBuffer {
     void
     update(audio_block_t *block) {
         for (size_t idx = 0; idx < AUDIO_BLOCK_SAMPLES; ++idx) {
-            uint16_t delayed_sample = getDelayedSample();
+            int16_t delayed_sample = getDelayedSample();
             int32_t mixed = (block->data[idx] * 7 + delayed_sample * 3) / 10;
             block->data[idx] = (int16_t)mixed;
             addSample(block->data[idx]);
@@ -97,7 +102,7 @@ class RingBuffer {
     }
 };
 
-RingBuffer buffer(100);
+RingBuffer buffer(1000);
 
 void
 GigaDelay::update(void) {

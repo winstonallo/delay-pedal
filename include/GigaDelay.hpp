@@ -61,10 +61,7 @@ class GigaDelay : public AudioStream {
         if (release_count == 0) release_count = 1;
     }
 
-    void
-    setTime(size_t time_ms) {
-        _time_ms = time_ms;
-    }
+    void setTime(size_t time_ms);
 
     bool isActive();
     bool isSustain();
