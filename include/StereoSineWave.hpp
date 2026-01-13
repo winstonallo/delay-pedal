@@ -1,6 +1,6 @@
 #include "Config.hpp"
 #include "GigaDelay.hpp"
-#include "VolumeKnob.hpp"
+#include "Knob.hpp"
 #include "effect_envelope.h"
 
 #ifdef SSW
@@ -25,7 +25,7 @@ extern AudioConnection connect1;
 extern AudioConnection connect5;
 extern AudioConnection connect6;
 
-extern VolumeKnob volume;
+extern Knob volumeKnob;
 
 void setup();
 void loop();

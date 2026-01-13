@@ -2,8 +2,8 @@
 
 #ifdef WVK
 
+#include "Knob.hpp"
 #include "PlayWavFile.hpp"
-#include "VolumeKnob.hpp"
 #include <Audio.h>
 
 namespace pwf {
@@ -14,7 +14,7 @@ AudioConnection patchCord1(playSdWav1, 0, i2s1, 0);
 AudioConnection patchCord2(playSdWav1, 1, i2s1, 1);
 AudioControlSGTL5000 sgtl5000_1;
 
-VolumeKnob volume(A14, 100000);
+Knob volume(A14, 100000);
 
 void
 setup() {

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "VolumeKnob.hpp"
+#include "Knob.hpp"
 #include <Audio.h>
 
 #define VOLUME_SAMPLES 5
@@ -22,7 +22,7 @@ extern AudioConnection patchCord1;
 extern AudioConnection patchCord2;
 extern AudioControlSGTL5000 sgtl5000_1;
 
-extern VolumeKnob volume;
+extern Knob volumeKnob;
 
 void setup();
 void loop();

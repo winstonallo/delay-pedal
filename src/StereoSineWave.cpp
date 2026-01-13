@@ -1,5 +1,5 @@
 #include "Config.hpp"
-#include "VolumeKnob.hpp"
+#include "Knob.hpp"
 #include "arm_math.h"
 #include "core_pins.h"
 #include "effect_envelope.h"
@@ -24,8 +24,8 @@ AudioConnection connect1(sound, 0, envelope, 0);
 AudioConnection connect5(envelope, 0, gigaDelay, 0);
 AudioConnection connect6(gigaDelay, 0, i2s1, 0);
 
-VolumeKnob volume(A14, 100000);
-VolumeKnob delayKnob(A15, 100000);
+Knob volumeKnob(A14, 100000);
+Knob delayKnob(A15, 100000);
 
 void
 setup() {
@@ -47,15 +47,15 @@ setup() {
     sgtl5000_1.enable();
     sgtl5000_1.volume(0.1);
 
-    ssw::volume.begin([] {
-        float32_t vol = volume.update();
-        Serial.printf("Volume: %.0f%%\n", vol * (float32_t)100);
-        ssw::sgtl5000_1.volume(vol);
+    ssw::volumeKnob.begin([] {
+        float32_t knobVal = volumeKnob.update();
+        Serial.printf("Volume: %.0f%%\n", knobVal * (float32_t)100);
+        ssw::sgtl5000_1.volume(knobVal);
     });
 
     ssw::delayKnob.begin([] {
-        float32_t vol = delayKnob.update();
-        float32_t time = vol * 4000.0;
+        float32_t knobVal = delayKnob.update();
+        float32_t time = knobVal * 4000.0;
         Serial.printf("Delay Time: %.3f ms\n", time);
         gigaDelay.setTime(time);
     });

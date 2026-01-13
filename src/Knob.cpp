@@ -1,14 +1,14 @@
-#include "VolumeKnob.hpp"
+#include "Knob.hpp"
 
-VolumeKnob::VolumeKnob(uint8_t pin, uint32_t readInterval) : _pin(pin), _readInterval(readInterval), _curr(0), _sum(0), _filled(false) {
-    memset(_samples, 0, VOLUME_SAMPLES * sizeof(uint16_t));
+Knob::Knob(uint8_t pin, uint32_t readInterval) : _pin(pin), _readInterval(readInterval), _curr(0), _sum(0), _filled(false) {
+    memset(_samples, 0, KNOB_SAMPLES * sizeof(uint16_t));
     _timer = IntervalTimer();
 }
 
-void (*VolumeKnob::_updateCallback)() = nullptr;
+void (*Knob::_updateCallback)() = nullptr;
 
 void
-VolumeKnob::begin(void (*updateCallback)()) {
+Knob::begin(void (*updateCallback)()) {
     _updateCallback = updateCallback;
 
     if (_updateCallback) {
@@ -17,12 +17,12 @@ VolumeKnob::begin(void (*updateCallback)()) {
 }
 
 uint8_t
-VolumeKnob::getPin() const {
+Knob::getPin() const {
     return _pin;
 }
 
 float32_t
-VolumeKnob::update() {
+Knob::update() {
     uint16_t knobValue = _readFromPin();
 
     _sum -= _samples[_curr];
@@ -31,7 +31,7 @@ VolumeKnob::update() {
     _sum += knobValue;
     _curr++;
 
-    if (_curr >= VOLUME_SAMPLES) {
+    if (_curr >= KNOB_SAMPLES) {
         _curr = 0;
         _filled = true;
     }
@@ -40,8 +40,8 @@ VolumeKnob::update() {
 }
 
 float32_t
-VolumeKnob::_getCurrentVolume() const {
-    uint8_t count = _filled ? VOLUME_SAMPLES : (_curr == 0 ? VOLUME_SAMPLES : _curr);
+Knob::_getCurrentVolume() const {
+    uint8_t count = _filled ? KNOB_SAMPLES : (_curr == 0 ? KNOB_SAMPLES : _curr);
     float32_t avgReading = (float32_t)_sum / (float32_t)count;
     float32_t vol = avgReading / 1023.0;
 
@@ -49,6 +49,6 @@ VolumeKnob::_getCurrentVolume() const {
 }
 
 uint16_t
-VolumeKnob::_readFromPin() {
+Knob::_readFromPin() {
     return analogRead(_pin);
 }

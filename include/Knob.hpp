@@ -1,17 +1,17 @@
 #pragma once
 
-#ifndef VOLUME_SAMPLES
-#define VOLUME_SAMPLES 5
+#ifndef KNOB_SAMPLES
+#define KNOB_SAMPLES 5
 #endif
 
 #include <Audio.h>
 #include <cstdint>
 
-class VolumeKnob {
+class Knob {
   private:
     uint8_t _pin;
     uint32_t _readInterval;
-    uint16_t _samples[VOLUME_SAMPLES];
+    uint16_t _samples[KNOB_SAMPLES];
     uint8_t _curr;
     uint16_t _sum;
     bool _filled;
@@ -21,9 +21,9 @@ class VolumeKnob {
     uint16_t _readFromPin();
 
   public:
-    VolumeKnob(uint8_t pin, uint32_t readInterval);
+    Knob(uint8_t pin, uint32_t readInterval);
 
-    VolumeKnob() = delete;
+    Knob() = delete;
 
     void begin(void (*updateCallback)());
 
