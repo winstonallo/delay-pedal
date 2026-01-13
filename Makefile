@@ -9,7 +9,7 @@ run:
 	pio run --target upload
 
 .PHONY: monitor
-monitor:
+monitor: run
 	pio device monitor
 
 .PHONY: clean
